@@ -1,3 +1,7 @@
+
+
+using Domain;
+
 public class Category
 {
     public required Guid Id {get; set;} = Guid.NewGuid();

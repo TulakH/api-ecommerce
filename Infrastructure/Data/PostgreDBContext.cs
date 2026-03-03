@@ -1,5 +1,6 @@
 namespace Infrastructure.Data;
 
+using Domain;
 using Microsoft.EntityFrameworkCore;
 
 public class PostgreDbContext(DbContextOptions<PostgreDbContext> options) : DbContext(options)
