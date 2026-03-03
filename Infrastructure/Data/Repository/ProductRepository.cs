@@ -1,11 +1,13 @@
 using Domain;
 using Infrastructure.Data.Repository.Abstraction;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repository;
 
 public class ProductRepository(PostgreDbContext postgreDbContext) : IProductRepository
 {
 
+    private bool _disposed = false;
 
     public async Task DeleteProduct(Guid id)
     {
@@ -15,38 +17,52 @@ public class ProductRepository(PostgreDbContext postgreDbContext) : IProductRepo
         postgreDbContext.Products.Remove(product);
     }
 
-    public void Dispose()
+
+    public async Task<Product?> GetProductById(Guid id)
     {
-        throw new NotImplementedException();
+        return await postgreDbContext.Products.FindAsync(id);
     }
 
-    public Product GetProductById(Guid id)
+    public async Task<Product?> GetProductByName(string name)
     {
-        throw new NotImplementedException();
-    }
-
-    public Product GetProductByName(string name)
-    {
-        throw new NotImplementedException();
+        return await postgreDbContext.Products.FirstOrDefaultAsync(p => p.Name == name);
     }
 
     public IEnumerable<Product> GetProducts()
     {
-        throw new NotImplementedException();
+        return postgreDbContext.Products.AsEnumerable();
     }
 
-    public Task InsertProduct(Product product)
+    public async Task InsertProduct(Product product)
     {
-        throw new NotImplementedException();
+        await postgreDbContext.Products.AddAsync(product);
     }
 
-    public Task Save()
+    public void UpdateProduct(Product product)
     {
-        throw new NotImplementedException();
+        postgreDbContext.Entry(product).State = EntityState.Modified;
     }
 
-    public Task UpdateProduct(Product product)
+    public async Task Save()
     {
-        throw new NotImplementedException();
+        await postgreDbContext.SaveChangesAsync();
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                postgreDbContext.Dispose();
+            }
+        }
+        _disposed = true;
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }
