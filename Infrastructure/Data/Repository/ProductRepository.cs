@@ -4,48 +4,48 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repository;
 
-public class ProductRepository(PostgreDbContext postgreDbContext) : IProductRepository
+public class ProductRepository(ApplicationDbContext dbContext) : IProductRepository
 {
 
     private bool _disposed = false;
 
     public async Task DeleteProduct(Guid id)
     {
-        var product = await postgreDbContext.Products.FindAsync(id);
+        var product = await dbContext.Products.FindAsync(id);
         if (product is null)
             return;
-        postgreDbContext.Products.Remove(product);
+        dbContext.Products.Remove(product);
     }
 
 
     public async Task<Product?> GetProductById(Guid id)
     {
-        return await postgreDbContext.Products.FindAsync(id);
+        return await dbContext.Products.FindAsync(id);
     }
 
     public async Task<Product?> GetProductByName(string name)
     {
-        return await postgreDbContext.Products.FirstOrDefaultAsync(p => p.Name == name);
+        return await dbContext.Products.FirstOrDefaultAsync(p => p.Name == name);
     }
 
     public IEnumerable<Product> GetProducts()
     {
-        return postgreDbContext.Products.AsEnumerable();
+        return dbContext.Products.AsEnumerable();
     }
 
     public async Task InsertProduct(Product product)
     {
-        await postgreDbContext.Products.AddAsync(product);
+        await dbContext.Products.AddAsync(product);
     }
 
     public void UpdateProduct(Product product)
     {
-        postgreDbContext.Entry(product).State = EntityState.Modified;
+        dbContext.Entry(product).State = EntityState.Modified;
     }
 
     public async Task Save()
     {
-        await postgreDbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 
     protected virtual void Dispose(bool disposing)
@@ -54,7 +54,7 @@ public class ProductRepository(PostgreDbContext postgreDbContext) : IProductRepo
         {
             if (disposing)
             {
-                postgreDbContext.Dispose();
+                dbContext.Dispose();
             }
         }
         _disposed = true;

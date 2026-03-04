@@ -3,7 +3,7 @@ namespace Infrastructure.Data;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
-public class PostgreDbContext(DbContextOptions<PostgreDbContext> options) : DbContext(options)
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
 	public DbSet<Category> Categories { get; set; } = null!;
 	public DbSet<Order> Orders { get; set; } = null!;
