@@ -1,3 +1,5 @@
+namespace Domain;
+
 public class OrderItem
 {
     public required Guid Id {get; set;} = Guid.NewGuid();

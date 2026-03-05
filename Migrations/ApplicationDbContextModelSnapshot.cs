@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace api_ecommerce.Migrations
 {
-    [DbContext(typeof(PostgreDbContext))]
-    partial class PostgreDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ApplicationDbContext))]
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -41,7 +41,7 @@ namespace api_ecommerce.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Order", b =>
+            modelBuilder.Entity("Domain.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,7 @@ namespace api_ecommerce.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("OrderItem", b =>
+            modelBuilder.Entity("Domain.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +86,7 @@ namespace api_ecommerce.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("Product", b =>
+            modelBuilder.Entity("Domain.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,15 +123,15 @@ namespace api_ecommerce.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("OrderItem", b =>
+            modelBuilder.Entity("Domain.OrderItem", b =>
                 {
-                    b.HasOne("Order", "Order")
+                    b.HasOne("Domain.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Product", "Product")
+                    b.HasOne("Domain.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -142,7 +142,7 @@ namespace api_ecommerce.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Product", b =>
+            modelBuilder.Entity("Domain.Product", b =>
                 {
                     b.HasOne("Category", "Category")
                         .WithMany("Products")
@@ -158,12 +158,12 @@ namespace api_ecommerce.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Order", b =>
+            modelBuilder.Entity("Domain.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("Product", b =>
+            modelBuilder.Entity("Domain.Product", b =>
                 {
                     b.Navigation("OrderItems");
                 });
