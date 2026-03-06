@@ -7,7 +7,7 @@ public class Product
     public required string Description {get; set;}
     public required decimal Price {get; set;}
     public int StockQuantity {get; set;}
-    public Guid CategoryId {get; set;}
+    public Guid? CategoryId {get; set;}
     public Category? Category {get; set;}
     public ICollection<OrderItem>? OrderItems {get; set;}  
     public DateTimeOffset CreatedAt {get; set;}

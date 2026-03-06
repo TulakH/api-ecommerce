@@ -7,5 +7,14 @@ public class ProductDto
     public required string Description { get; set; }
     public required decimal Price { get; set; }
     public int StockQuantity { get; set; }
-    public Guid CategoryId { get; set; }
+    public Guid? CategoryId { get; set; }
+}
+
+public class CreateProduct
+{
+    public required string Name { get; set; }
+    public required string Description { get; set; }
+    public required decimal Price { get; set; }
+    public int StockQuantity { get; set; }
+    public Guid? CategoryId { get; set; }
 }
