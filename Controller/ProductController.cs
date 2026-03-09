@@ -8,19 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class ProductController(IProductRepository productRepository) : ControllerBase
 {
-    [HttpGet]
-    public ActionResult<List<ProductDto>> Get()
-    {
-        
-        try
-        {
-            return productRepository.GetProducts().Select(p => p.Adapt<ProductDto>()).ToList();
-        }
-        catch 
-        {
-            return Problem("Internal error contact support");
-        }
-    }
 
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] PageParameters pageParameters)

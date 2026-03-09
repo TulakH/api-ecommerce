@@ -25,7 +25,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasDefaultValueSql("NOW()")
             .ValueGeneratedOnAdd()
             .Metadata
-            .SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
+            .SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             entity.Property(p => p.UpdatedAt)
             .HasDefaultValueSql("NOW()")
@@ -42,6 +42,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
            entity.HasKey(o => o.Id);
            //TODO : client FK
+
+            entity.Property(o => o.CreatedAt)
+            .HasDefaultValueSql("NOW()")
+            .ValueGeneratedOnAdd()
+            .Metadata
+            .SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
+
         });
 
         modelBuilder.Entity<OrderItem>(entity =>
