@@ -33,6 +33,11 @@ public class ProductRepository(ApplicationDbContext dbContext) : IProductReposit
         return dbContext.Products.AsEnumerable();
     }
 
+    public IQueryable<Product> GetProductsAsQueryable()
+    {
+        return dbContext.Products.AsQueryable();
+    }
+
     public async Task InsertProduct(Product product)
     {
         await dbContext.Products.AddAsync(product);

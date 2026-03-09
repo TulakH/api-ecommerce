@@ -5,6 +5,7 @@ namespace Infrastructure.Data.Repository.Abstraction;
 public interface IProductRepository : IDisposable
 {
     IEnumerable<Product> GetProducts();
+    IQueryable<Product> GetProductsAsQueryable();
     Task<Product?> GetProductById(Guid id);
     Task<Product?> GetProductByName(string name);
     Task InsertProduct(Product product);

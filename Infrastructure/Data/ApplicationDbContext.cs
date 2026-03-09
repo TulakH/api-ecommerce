@@ -2,6 +2,7 @@ namespace Infrastructure.Data;
 
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
@@ -19,6 +20,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.HasOne(p => p.Category)
                   .WithMany(c => c.Products)
                   .HasForeignKey(p => p.CategoryId);
+
+            entity.Property(p => p.CreatedAt)
+            .HasDefaultValueSql("NOW()")
+            .ValueGeneratedOnAdd()
+            .Metadata
+            .SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
+
+            entity.Property(p => p.UpdatedAt)
+            .HasDefaultValueSql("NOW()")
+            .ValueGeneratedOnAddOrUpdate();
         });
 
         modelBuilder.Entity<Category>(entity =>

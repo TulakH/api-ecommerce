@@ -23,6 +23,22 @@ public class ProductController(IProductRepository productRepository) : Controlle
     }
 
     [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] PageParameters pageParameters)
+    {
+        
+        try
+        {
+            var productQueryable = productRepository.GetProductsAsQueryable();
+            var pagedProduct = await PagedList<ProductDto>.CreateAsync<Product, ProductDto>(productQueryable, pageParameters.PageNumber, pageParameters.PageSize);
+            return Ok(pagedProduct);
+        }
+        catch 
+        {
+            return Problem("Internal error contact support");
+        }
+    }
+
+    [HttpGet]
     [Route("{id:guid}")]
     public async Task<ActionResult<ProductDto>> Get(Guid id)
     {
@@ -45,7 +61,8 @@ public class ProductController(IProductRepository productRepository) : Controlle
     {
         try
         {
-            await productRepository.InsertProduct(product.Adapt<Product>());
+            var productDb = product.Adapt<Product>();
+            await productRepository.InsertProduct(productDb);
             await productRepository.Save();
             return Created();
         }
@@ -60,7 +77,8 @@ public class ProductController(IProductRepository productRepository) : Controlle
     {
         try
         {
-            productRepository.UpdateProduct(product.Adapt<Product>());
+            var productDb = product.Adapt<Product>();
+            productRepository.UpdateProduct(productDb);
             await productRepository.Save();
             return NoContent();
         }
