@@ -43,6 +43,25 @@ public class ProductController(IProductRepository productRepository) : Controlle
         }
     }
 
+    [HttpGet]
+    [Route("{keyword}")]
+    public async Task<IActionResult> Search(string keyword, [FromQuery] PageParameters pageParameters)
+    {
+
+        if (keyword.Length < 3) return BadRequest("need more than 2 caracter");
+
+        try
+        {
+            var productQuery = productRepository.GetProductsByNameKeyword(keyword.ToLower());
+            var pagedProduct = await PagedList<ProductDto>.CreateAsync<Product, ProductDto>(productQuery, pageParameters.PageNumber, pageParameters.PageSize);
+            return  Ok(pagedProduct);
+        }
+        catch (Exception ex)
+        {
+            return Problem("Internal error contact support");
+        }
+    }
+
     [HttpPost]
     public async Task<ActionResult> CreateProduct([FromBody] CreateProduct product)
     {

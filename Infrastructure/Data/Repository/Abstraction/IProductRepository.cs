@@ -8,6 +8,7 @@ public interface IProductRepository : IDisposable
     IQueryable<Product> GetProductsAsQueryable();
     Task<Product?> GetProductById(Guid id);
     Task<Product?> GetProductByName(string name);
+    IQueryable<Product> GetProductsByNameKeyword(string keyword);
     Task InsertProduct(Product product);
     void UpdateProduct(Product product);
     Task DeleteProduct(Guid id);

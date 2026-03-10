@@ -48,6 +48,11 @@ public class ProductRepository(ApplicationDbContext dbContext) : IProductReposit
         dbContext.Entry(product).State = EntityState.Modified;
     }
 
+    public IQueryable<Product> GetProductsByNameKeyword(string keyword)
+    {
+        return dbContext.Products.AsNoTracking().Where(p => p.Name.ToLower().Contains(keyword)).AsQueryable();
+    }
+
     public async Task Save()
     {
         await dbContext.SaveChangesAsync();
@@ -70,4 +75,6 @@ public class ProductRepository(ApplicationDbContext dbContext) : IProductReposit
         Dispose(true);
         GC.SuppressFinalize(this);
     }
+
+    
 }
