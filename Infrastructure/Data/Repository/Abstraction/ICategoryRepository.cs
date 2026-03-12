@@ -1,6 +1,7 @@
 public interface ICategoryRepository
 {
-     IEnumerable<Category> GetCategorys();
+    IEnumerable<Category> GetCategorys();
+    IQueryable<Category> GetCategorysAsQueyrable();
     Task<Category?> GetCategoryById(Guid id);
     Task<Category?> GetCategoryByName(string name);
     Task InsertCategory(Category Category);

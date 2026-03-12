@@ -6,6 +6,7 @@ public interface IProductRepository : IDisposable
 {
     IEnumerable<Product> GetProducts();
     IQueryable<Product> GetProductsAsQueryable();
+    IQueryable<Product> GetProductsByCategoryId(Guid categoryId);
     Task<Product?> GetProductById(Guid id);
     Task<Product?> GetProductByName(string name);
     IQueryable<Product> GetProductsByNameKeyword(string keyword);

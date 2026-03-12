@@ -13,6 +13,8 @@ public class CategoryRepository(ApplicationDbContext dbContext) : ICategoryRepos
         dbContext.Categories.Remove(category);
     }
 
+    public IQueryable<Category> GetCategorysAsQueyrable() => dbContext.Categories.AsQueryable();
+
     public async Task<Category?> GetCategoryById(Guid id) => await dbContext.Categories.FindAsync(id);
 
     public async Task<Category?> GetCategoryByName(string name) => await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == name);
@@ -45,4 +47,5 @@ public class CategoryRepository(ApplicationDbContext dbContext) : ICategoryRepos
         Dispose(true);
         GC.SuppressFinalize(this);
     }
+
 }

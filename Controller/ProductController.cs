@@ -3,6 +3,7 @@ using Domain;
 using Infrastructure.Data.Repository.Abstraction;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -52,13 +53,50 @@ public class ProductController(IProductRepository productRepository) : Controlle
 
         try
         {
-            var productQuery = productRepository.GetProductsByNameKeyword(keyword.ToLower());
-            var pagedProduct = await PagedList<ProductDto>.CreateAsync<Product, ProductDto>(productQuery, pageParameters.PageNumber, pageParameters.PageSize);
+            var productsQuery = productRepository.GetProductsByNameKeyword(keyword.ToLower());
+            var pagedProduct = await PagedList<ProductDto>.CreateAsync<Product, ProductDto>(productsQuery, pageParameters.PageNumber, pageParameters.PageSize);
             return  Ok(pagedProduct);
         }
         catch (Exception ex)
         {
             return Problem("Internal error contact support");
+        }
+    }
+
+    [HttpGet]
+    [Route("by-category/{categoryId:guid}")]
+
+    public async Task<IActionResult> GetProductByCategory([FromQuery] Guid categoryId, [FromQuery] PageParameters pageParameters)
+    {
+        try
+        {
+            var productsQuery = productRepository.GetProductsByCategoryId(categoryId);
+            var pagedProduct = await PagedList<ProductDto>.CreateAsync<Product, ProductDto>(productsQuery, pageParameters.PageNumber, pageParameters.PageSize);
+            return Ok(pagedProduct);
+        }
+        catch (Exception)
+        {
+            return Problem("internal error, contact support");
+        }
+    }
+
+    [HttpPut]
+    [Route("add-category")]
+    public async Task<IActionResult> AddCategory(Guid productId, Guid categoryId, [FromServices] ICategoryRepository categoryRepository)
+    {
+        try
+        {
+            if (!await categoryRepository.GetCategorysAsQueyrable().AnyAsync(c => c.Id == categoryId)) return BadRequest($"{nameof(categoryId)} don't exist");
+            var product = await productRepository.GetProductById(productId);
+            if (product is null) return BadRequest($"{nameof(productId)} don't exist");
+            product.CategoryId = categoryId;
+            await productRepository.Save();
+
+            return NoContent();
+        }
+        catch (System.Exception)
+        {
+            return Problem("internal error, contact support");
         }
     }
 

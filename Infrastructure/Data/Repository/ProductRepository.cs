@@ -76,5 +76,5 @@ public class ProductRepository(ApplicationDbContext dbContext) : IProductReposit
         GC.SuppressFinalize(this);
     }
 
-    
+    public IQueryable<Product> GetProductsByCategoryId(Guid categoryId) => dbContext.Products.Where(p => p.CategoryId == categoryId);
 }
