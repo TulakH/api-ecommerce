@@ -1,6 +1,9 @@
 using Infrastructure.Data;
+using Infrastructure.Data.Repository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+namespace Infrastructure.Data.Repository;
 
 public class CategoryRepository(ApplicationDbContext dbContext) : ICategoryRepository
 {

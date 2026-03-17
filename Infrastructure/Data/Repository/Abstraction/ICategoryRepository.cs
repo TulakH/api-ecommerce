@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
+namespace Infrastructure.Data.Repository.Abstraction;
+
 public interface ICategoryRepository
 {
     IEnumerable<Category> GetCategorys();

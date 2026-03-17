@@ -1,6 +1,8 @@
 using Domain;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
+namespace Infrastructure.Data.Repository.Abstraction;
+
 public interface IOrderRepository
 {
 
